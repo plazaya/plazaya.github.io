@@ -42,6 +42,9 @@
     --ink: #F4F6F2;
     --muted: #A9B7C6;
     --line: #2B3D55;
+    --card: #121F31;
+    --mint-tint: rgba(61, 220, 151, 0.1);
+    --ink-tint: rgba(11, 20, 34, 0.18);
     --button-ink: #0B1422;
     --display: 'Space Grotesk', 'Arial Narrow', Arial, sans-serif;
     --body: 'DM Sans', 'Segoe UI', Roboto, Arial, sans-serif;
@@ -274,6 +277,55 @@
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
   }
 
+  /* Resumen de la presentación */
+  .jump { align-self: flex-start; color: var(--mint); font-weight: 700; text-decoration: none; border-bottom: 2px solid var(--mint-soft); padding-bottom: 2px; }
+  .jump:hover { border-bottom-color: var(--mint); }
+  .jump:focus-visible { outline: 3px solid var(--mint); outline-offset: 3px; }
+  .resumen { display: flex; flex-direction: column; gap: 14px; padding-top: 28px; border-top: 1px solid var(--line); scroll-margin-top: 16px; }
+  .kicker { margin: 0; font-size: 12px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--mint); }
+  .resumen > h2 { margin: 0; font-family: var(--display); font-weight: 700; font-size: clamp(1.6rem, 6.4vw, 2.1rem); line-height: 1.1; letter-spacing: -0.02em; text-wrap: balance; }
+  .lede { margin: 0; color: var(--muted); }
+  .card { display: flex; flex-direction: column; gap: 12px; background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 18px 18px 20px; }
+  .card h3 { margin: 0; display: flex; align-items: baseline; gap: 10px; font-family: var(--display); font-weight: 700; font-size: 20px; line-height: 1.2; }
+  .card h3 .n { font-size: 13px; color: var(--mint); font-variant-numeric: tabular-nums; letter-spacing: 0.06em; }
+  .card h4 { margin: 0 0 6px; font-size: 14px; font-weight: 700; color: var(--ink); }
+  .card p { margin: 0; color: var(--muted); }
+  .card strong { color: var(--ink); }
+  .card ol, .card ul { margin: 0; padding-left: 20px; color: var(--muted); display: flex; flex-direction: column; gap: 4px; }
+  .two { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; }
+  .card ul.checks { list-style: none; padding-left: 0; }
+  .checks li { position: relative; padding-left: 26px; }
+  .checks li::before { content: ""; position: absolute; left: 3px; top: 0.4em; width: 12px; height: 7px; border-left: 2px solid var(--mint); border-bottom: 2px solid var(--mint); transform: rotate(-45deg); }
+  .rows { display: flex; flex-direction: column; }
+  .row { display: grid; grid-template-columns: 7.4em minmax(0, 1fr); gap: 12px; align-items: baseline; padding: 9px 0; border-top: 1px solid var(--line); }
+  .row:first-child { border-top: 0; padding-top: 0; }
+  .row > :last-child { color: var(--muted); font-size: 15px; line-height: 1.4; }
+  .row .v { font-family: var(--display); font-weight: 700; font-size: 20px; line-height: 1.1; color: var(--mint); white-space: nowrap; }
+  .callout { background: var(--mint-tint); border: 1px solid var(--mint-soft); border-radius: 12px; padding: 12px 14px; }
+  .card .callout { color: var(--ink); }
+  .callout b { font-family: var(--display); font-size: 22px; color: var(--mint); white-space: nowrap; }
+  .tbl { overflow-x: auto; }
+  .tbl table { width: 100%; border-collapse: collapse; font-size: 14px; font-variant-numeric: tabular-nums; }
+  .tbl th, .tbl td { padding: 8px 4px; text-align: right; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  .tbl th:first-child, .tbl td:first-child { text-align: left; }
+  .tbl th { font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+  .tbl .neg { color: var(--amber); }
+  .tbl .pos { color: var(--mint); }
+  .card ol.timeline { list-style: none; padding-left: 0; gap: 10px; }
+  .timeline li { display: grid; grid-template-columns: 7.6em minmax(0, 1fr); gap: 12px; align-items: baseline; }
+  .timeline .when { font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--mint); }
+  .card.ronda { background: var(--mint); border-color: var(--mint); color: var(--button-ink); }
+  .card.ronda h3 .n, .card.ronda p, .card.ronda strong { color: var(--button-ink); }
+  .big { font-family: var(--display); font-weight: 700; font-size: clamp(2.3rem, 11vw, 3rem); line-height: 1; letter-spacing: -0.03em; }
+  .funds { display: flex; flex-direction: column; gap: 10px; }
+  .fund { display: flex; flex-direction: column; gap: 5px; }
+  .fund-top { display: flex; justify-content: space-between; gap: 12px; font-size: 15px; }
+  .fund-top span:last-child { font-weight: 700; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .bar { height: 8px; border-radius: 4px; background: var(--ink-tint); overflow: hidden; }
+  .bar i { display: block; height: 100%; border-radius: 4px; background: var(--button-ink); }
+  .sources { margin: 0; font-size: 13px; color: var(--muted); }
+  @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+
   @media (prefers-reduced-motion: reduce) {
     .led { animation: none; }
     .store, .curb { transition: none; }
@@ -337,6 +389,142 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg>
       Volver a abrir la puerta
     </button>
+    <a class="jump" href="#resumen">Ver el resumen de la presentación ↓</a>
+  </section>
+
+  <section class="resumen" id="resumen" aria-labelledby="resumenTitle">
+    <p class="kicker">La presentación, en resumen</p>
+    <h2 id="resumenTitle">PlazaYa en dos minutos</h2>
+    <p class="lede">Lo que contamos en clase, para repasarlo con calma.</p>
+
+    <article class="card">
+      <h3><span class="n">01</span>El problema</h3>
+      <p>Aparcar en la ciudad se ha vuelto un problema diario.</p>
+      <div class="rows">
+        <div class="row"><span class="v">20 min</span><span>de media para encontrar sitio en la calle</span></div>
+        <div class="row"><span class="v">30 %</span><span>del tráfico del centro puede ser gente buscando aparcamiento</span></div>
+        <div class="row"><span class="v">26,7 M</span><span>de turismos circulan por España (2025)</span></div>
+      </div>
+    </article>
+
+    <article class="card">
+      <h3><span class="n">02</span>La oportunidad</h3>
+      <p>Mientras tanto, miles de plazas privadas están vacías: su dueño está trabajando, de viaje o ya no usa el coche. Alquilarlas por meses exige contratos, mandos y buscar inquilino.</p>
+      <p class="callout"><b>75 €/mes</b> es el alquiler medio de una plaza de garaje en España (Fotocasa, 2025).</p>
+    </article>
+
+    <article class="card">
+      <h3><span class="n">03</span>La solución y cómo funciona</h3>
+      <p><strong>PlazaYa conecta plazas de garaje vacías con conductores que necesitan aparcar</strong>, por horas, días o meses. Búsqueda, reserva, pago y acceso desde la misma app.</p>
+      <div class="two">
+        <div>
+          <h4>Si buscas aparcamiento</h4>
+          <ol>
+            <li>Busca en el mapa una plaza cerca de tu destino.</li>
+            <li>Reserva por horas, días o meses y paga en la app.</li>
+            <li>Entra al garaje con tu móvil o con el código QR.</li>
+          </ol>
+        </div>
+        <div>
+          <h4>Si tienes una plaza</h4>
+          <ol>
+            <li>Publica tu plaza gratis e indica cuándo está libre.</li>
+            <li>PlazaYa gestiona las reservas, los pagos y los avisos.</li>
+            <li>Recibe tus ingresos cada mes en tu cuenta.</li>
+          </ol>
+        </div>
+      </div>
+    </article>
+
+    <article class="card">
+      <h3><span class="n">04</span>Acceso con el móvil o un QR</h3>
+      <ul class="checks">
+        <li>El QR solo funciona durante tu reserva.</li>
+        <li>Sin mandos ni copias de llaves.</li>
+        <li>Registro de cada entrada y salida.</li>
+        <li>La comunidad decide quién entra y cuándo.</li>
+      </ul>
+      <p>Se conecta al motor de la puerta que ya tiene el garaje: no hay que cambiar la puerta ni hacer obras.</p>
+    </article>
+
+    <article class="card">
+      <h3><span class="n">05</span>Nuestros clientes</h3>
+      <div class="rows">
+        <div class="row"><strong>Conductores</strong><span>Trabajadores que van al centro, visitantes, turistas, asistentes a eventos y vecinos sin plaza propia.</span></div>
+        <div class="row"><strong>Propietarios</strong><span>Su plaza queda libre mientras trabajan, tienen una segunda vivienda o ya casi no usan el coche.</span></div>
+        <div class="row"><strong>Comunidades</strong><span>Quieren modernizar el acceso al garaje, controlar quién entra y ganar ingresos con plazas comunes.</span></div>
+      </div>
+    </article>
+
+    <article class="card">
+      <h3><span class="n">06</span>Todos salen ganando</h3>
+      <div class="rows">
+        <div class="row"><strong>Conductor</strong><span>Aparca sin dar vueltas, con el coche a cubierto y pagando solo lo que usa.</span></div>
+        <div class="row"><strong>Propietario</strong><span>Ingresos extra sin esfuerzo: decide cuándo alquilar y cobra de forma automática.</span></div>
+        <div class="row"><strong>Comunidad</strong><span>Acceso sin mandos ni llaves, más control y dinero para los gastos comunes.</span></div>
+        <div class="row"><strong>Ciudad</strong><span>Menos coches dando vueltas, menos atascos y emisiones, y mejor uso del espacio.</span></div>
+      </div>
+      <p class="callout"><b>≈ 100 €/mes</b> extra para un propietario con la plaza libre de 9 a 17 h en días laborables, a 1,50 €/h, con un 50 % de ocupación y después de la comisión del 20 %.</p>
+    </article>
+
+    <article class="card">
+      <h3><span class="n">07</span>Competencia</h3>
+      <div class="rows">
+        <div class="row"><strong>Parclick</strong><span>Reservas en parkings comerciales, sin plazas de particulares ni comunidades.</span></div>
+        <div class="row"><strong>Portales de anuncios</strong><span>Alquiler por meses: contratos, entrega de mandos y nada por horas.</span></div>
+        <div class="row"><strong>Kits de apertura</strong><span>Abren el garaje con el móvil, pero no traen conductores.</span></div>
+      </div>
+      <p><strong>PlazaYa une las tres cosas:</strong> plazas de particulares y comunidades, reservas flexibles y acceso integrado con el móvil o un QR.</p>
+    </article>
+
+    <article class="card">
+      <h3><span class="n">08</span>Modelo de negocio</h3>
+      <div class="rows">
+        <div class="row"><span class="v">20 %</span><span>de comisión por reserva: el propietario recibe el 80 %.</span></div>
+        <div class="row"><span class="v">149 €</span><span>por instalar el kit de acceso en un garaje o comunidad.</span></div>
+        <div class="row"><span class="v">9,90 €/mes</span><span>de mantenimiento por puerta: app de gestión y soporte.</span></div>
+      </div>
+      <p>Publicar una plaza es gratis: solo ganamos cuando el propietario gana.</p>
+    </article>
+
+    <article class="card">
+      <h3><span class="n">09</span>Previsión a tres años</h3>
+      <div class="tbl">
+        <table>
+          <thead><tr><th>Año</th><th>Ingresos</th><th>Gastos</th><th>Resultado</th></tr></thead>
+          <tbody>
+            <tr><td>2027</td><td>95 k€</td><td>234 k€</td><td class="neg">−139 k€</td></tr>
+            <tr><td>2028</td><td>556 k€</td><td>479 k€</td><td class="pos">+77 k€</td></tr>
+            <tr><td>2029</td><td>2,03 M€</td><td>1,42 M€</td><td class="pos">+611 k€</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p><strong>Beneficios desde el segundo año (2028).</strong> Hipótesis: ticket medio de 8 € por reserva y comisión del 20 %; 300, 1.500 y 5.000 plazas activas de media; de 15 a 20 reservas por plaza al mes.</p>
+    </article>
+
+    <article class="card">
+      <h3><span class="n">10</span>Hoja de ruta</h3>
+      <ol class="timeline">
+        <li><span class="when">Ene–jun 2027</span><span>Piloto en dos barrios de Madrid.</span></li>
+        <li><span class="when">Jul–dic 2027</span><span>Todo Madrid: 300 plazas y 40 comunidades.</span></li>
+        <li><span class="when">2028</span><span>Barcelona y Valencia: 1.500 plazas y 200 comunidades.</span></li>
+        <li><span class="when">2029</span><span>10 ciudades: 5.000 plazas y 600 comunidades.</span></li>
+      </ol>
+    </article>
+
+    <article class="card ronda">
+      <h3><span class="n">11</span>La ronda</h3>
+      <p class="big">250.000 €</p>
+      <p><strong>a cambio del 10 % de PlazaYa</strong>, con una valoración de 2,5 M€ después de la ronda.</p>
+      <div class="funds" aria-label="Uso de los fondos">
+        <div class="fund"><div class="fund-top"><span>Tecnología: app y kit de acceso</span><span>87.500 € · 35 %</span></div><div class="bar"><i style="width: 35%"></i></div></div>
+        <div class="fund"><div class="fund-top"><span>Marketing y captación de plazas</span><span>87.500 € · 35 %</span></div><div class="bar"><i style="width: 35%"></i></div></div>
+        <div class="fund"><div class="fund-top"><span>Equipo</span><span>50.000 € · 20 %</span></div><div class="bar"><i style="width: 20%"></i></div></div>
+        <div class="fund"><div class="fund-top"><span>Legal, seguros y reserva</span><span>25.000 € · 10 %</span></div><div class="bar"><i style="width: 10%"></i></div></div>
+      </div>
+    </article>
+
+    <p class="sources">Fuentes de los datos de mercado: El Referente / Wazypark, BBVA, Anfac (Informe Anual 2025) y Fotocasa (2025). Las cifras de negocio son previsiones del equipo para este proyecto de clase.</p>
   </section>
 
   <p class="foot">PlazaYa es un proyecto de clase: simulación de una ronda de financiación de startups. La app todavía no está publicada.</p>
