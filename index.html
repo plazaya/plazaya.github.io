@@ -1,0 +1,410 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>PlazaYa · Ya estás dentro</title>
+<meta name="description" content="Escanea, entra y disfruta tu plaza. PlazaYa: plazas de garaje privadas por horas, con acceso desde el móvil.">
+<meta name="theme-color" content="#0B1422">
+<meta property="og:title" content="PlazaYa · Ya estás dentro">
+<meta property="og:description" content="Tu plaza de garaje, justo cuando la necesitas.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%233DDC97'/%3E%3Ctext x='32' y='46' font-family='Arial,sans-serif' font-size='40' font-weight='700' text-anchor='middle' fill='%230B1422'%3EP%3C/text%3E%3C/svg%3E">
+<style>
+  html { -webkit-text-size-adjust: 100%; }
+  :root { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+  *, *::before, *::after { box-sizing: border-box; }
+  body { margin: 0; }
+  img { max-width: 100%; }
+  [hidden] { display: none !important; }
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=DM+Sans:wght@400;500;700&display=swap">
+<style>
+  /* Layout: una columna centrada (máx. 520px) — cabecera, fachada del garaje con lector QR y puerta seccional, bloque de descarga. Escena nocturna: tema oscuro único a propósito. */
+  :root {
+    --night: #0B1422;
+    --night-glow: #16263B;
+    --wall: #1D2D42;
+    --wall-hi: #2A3E57;
+    --frame: #0C1623;
+    --interior: #0E1B2B;
+    --interior-hi: #1B2D44;
+    --door: #C7D0DA;
+    --door-lo: #9AA6B4;
+    --door-line: #6E7A88;
+    --seal: #22272E;
+    --tube-off: #33445A;
+    --tube-on: #E8FFF4;
+    --mint: #3DDC97;
+    --mint-soft: rgba(61, 220, 151, 0.45);
+    --amber: #F5A524;
+    --ink: #F4F6F2;
+    --muted: #A9B7C6;
+    --line: #2B3D55;
+    --button-ink: #0B1422;
+    --display: 'Space Grotesk', 'Arial Narrow', Arial, sans-serif;
+    --body: 'DM Sans', 'Segoe UI', Roboto, Arial, sans-serif;
+    color-scheme: dark;
+  }
+
+  html, body { min-height: 100%; }
+  body {
+    background: radial-gradient(ellipse 90% 60% at 50% 0%, var(--night-glow) 0%, var(--night) 70%) var(--night);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: 16px;
+    line-height: 1.5;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    padding-block: 18px 40px;
+  }
+
+  .wrap { max-width: 520px; margin: 0 auto; display: flex; flex-direction: column; gap: 22px; }
+
+  /* Cabecera */
+  .top { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  .brand { display: flex; align-items: center; gap: 10px; }
+  .mark {
+    display: grid; place-items: center;
+    width: 38px; height: 38px; border-radius: 11px;
+    background: var(--mint); color: var(--button-ink);
+    font-family: var(--display); font-weight: 700; font-size: 22px; line-height: 1;
+  }
+  .word { font-family: var(--display); font-weight: 700; font-size: 24px; letter-spacing: -0.02em; }
+  .word span { color: var(--mint); }
+  .spot {
+    font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 6px 12px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Fachada */
+  .scene { display: flex; flex-direction: column; }
+  .facade {
+    display: flex; flex-direction: column; align-items: center; gap: 14px;
+    padding: 14px 10px 0;
+    border-radius: 18px 18px 0 0;
+    background:
+      repeating-linear-gradient(0deg, transparent 0 46px, rgba(0, 0, 0, 0.18) 46px 48px),
+      linear-gradient(180deg, var(--wall-hi), var(--wall));
+  }
+  .reader {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--frame); border: 1px solid var(--line); border-radius: 999px;
+    padding: 8px 16px 8px 12px; max-width: 100%;
+  }
+  .led {
+    flex: none; width: 11px; height: 11px; border-radius: 50%;
+    background: var(--amber); box-shadow: 0 0 10px var(--amber);
+    animation: blink 0.8s ease-in-out infinite;
+  }
+  .reader-text { font-size: 14px; font-weight: 500; color: var(--ink); min-width: 0; }
+  .facade[data-state="granted"] .led,
+  .facade[data-state="open"] .led { background: var(--mint); box-shadow: 0 0 14px var(--mint); animation: none; }
+
+  .opening {
+    position: relative; align-self: stretch;
+    height: 0; padding-bottom: 104%;
+    overflow: hidden;
+    border: 10px solid var(--frame); border-bottom: 0;
+    border-radius: 8px 8px 0 0;
+    background: var(--interior);
+  }
+
+  /* Interior del garaje */
+  .interior {
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, var(--interior-hi) 0%, var(--interior) 58%, var(--night) 100%);
+    filter: brightness(0.4);
+  }
+  .tubes { position: absolute; top: 7%; left: 8%; right: 8%; display: flex; justify-content: space-between; gap: 6%; }
+  .tubes i { flex: 1; height: 6px; border-radius: 3px; background: var(--tube-off); }
+  .message {
+    position: absolute; left: 4%; right: 4%; top: 14%;
+    display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center;
+  }
+  .eyebrow {
+    margin: 0; font-size: 12px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--mint);
+  }
+  .message h1 {
+    margin: 0;
+    font-family: var(--display); font-weight: 700;
+    font-size: clamp(1.6rem, 7.4vw, 2.9rem); line-height: 1.04; letter-spacing: -0.03em;
+    text-wrap: balance;
+  }
+  .message h1 span {
+    color: var(--mint);
+    background-image: linear-gradient(var(--mint), var(--mint));
+    background-repeat: no-repeat; background-position: 0 100%; background-size: 0% 4px;
+    padding-bottom: 4px;
+  }
+  .ticket {
+    margin: 4px 0 0; font-size: 13px; font-weight: 500; color: var(--muted);
+    border: 1px dashed var(--line); border-radius: 10px; padding: 6px 12px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .floor {
+    position: absolute; left: -25%; right: -25%; bottom: -4%; height: 34%;
+    transform: perspective(420px) rotateX(58deg); transform-origin: 50% 100%;
+    background:
+      repeating-linear-gradient(90deg, transparent 0 calc(20% - 4px), rgba(244, 246, 242, 0.5) calc(20% - 4px) 20%),
+      linear-gradient(180deg, #13233A, var(--night));
+  }
+  .bay {
+    position: absolute; left: 40%; width: calc(20% - 4px); top: 0; bottom: 0;
+    display: grid; place-items: center;
+    border: 4px solid var(--mint); border-bottom: 0;
+    background: rgba(61, 220, 151, 0.12);
+    box-shadow: 0 0 26px var(--mint-soft), inset 0 0 22px var(--mint-soft);
+  }
+  .bay b { font-family: var(--display); font-size: 44px; color: var(--mint); line-height: 1; }
+
+  /* Puerta seccional */
+  .door {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    border-bottom: 7px solid var(--seal);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.5);
+    will-change: transform;
+  }
+  .slat {
+    flex: 1;
+    background:
+      repeating-linear-gradient(90deg, transparent 0 18px, rgba(0, 0, 0, 0.035) 18px 19px),
+      linear-gradient(180deg, var(--door) 0%, var(--door) 62%, var(--door-lo) 90%, var(--door-line) 100%);
+    border-bottom: 1px solid var(--door-line);
+  }
+  .handle {
+    position: absolute; bottom: 7%; left: 50%; width: 22%; height: 8px; transform: translateX(-50%);
+    border-radius: 4px; background: var(--door-line);
+  }
+  .curb {
+    height: 16px; border-radius: 0 0 10px 10px;
+    background: linear-gradient(180deg, #2A3647, #1B2635);
+    transition: box-shadow 1.2s ease;
+  }
+
+  /* Secuencia de apertura */
+  .facade.opening .door { animation: rise 2.9s cubic-bezier(0.55, 0.06, 0.3, 1) forwards; }
+  .facade.closing .door { animation: lower 0.9s cubic-bezier(0.5, 0, 0.75, 0) forwards; }
+  .facade.opening .interior { animation: light-up 2.9s ease forwards; }
+  .facade.opening .eyebrow { animation: rise-in 0.6s 1.25s ease-out both; }
+  .facade.opening .message h1 { animation: pop-in 0.8s 1.45s cubic-bezier(0.2, 0.9, 0.3, 1.25) both; }
+  .facade.opening .ticket { animation: rise-in 0.6s 2s ease-out both; }
+  .facade.lit .tubes i { animation: flicker 1s steps(1) both; }
+  .facade.lit .tubes i:nth-child(2) { animation-delay: 0.18s; }
+  .facade.lit .tubes i:nth-child(3) { animation-delay: 0.34s; }
+  .facade.open .message h1 span { transition: background-size 0.7s ease; background-size: 100% 4px; }
+  .facade.open .bay { animation: glow 2.4s ease-in-out infinite; }
+  .scene:has(.facade.open) .curb { box-shadow: 0 -4px 34px var(--mint-soft); }
+
+  /* Sin animación: puerta abierta desde el principio */
+  .facade.static .door { transform: translateY(-104%); }
+  .facade.static .interior { filter: none; }
+  .facade.static .tubes i { background: var(--tube-on); box-shadow: 0 0 16px 3px var(--mint-soft); }
+
+  @keyframes blink { 50% { opacity: 0.35; } }
+  @keyframes rise {
+    0% { transform: translateY(0); }
+    6% { transform: translateY(-3%); }
+    10% { transform: translateY(-2%); }
+    100% { transform: translateY(-104%); }
+  }
+  @keyframes lower { from { transform: translateY(-104%); } to { transform: translateY(0); } }
+  @keyframes light-up { 0% { filter: brightness(0.4); } 100% { filter: none; } }
+  @keyframes rise-in { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+  @keyframes pop-in { from { opacity: 0; transform: scale(0.88); } to { opacity: 1; transform: none; } }
+  @keyframes flicker {
+    0%   { background: var(--tube-off); box-shadow: none; }
+    12%  { background: var(--tube-on); box-shadow: 0 0 16px 3px var(--mint-soft); }
+    20%  { background: var(--tube-off); box-shadow: none; }
+    34%  { background: var(--tube-on); box-shadow: 0 0 16px 3px var(--mint-soft); }
+    42%  { background: var(--tube-off); box-shadow: none; }
+    56%, 100% { background: var(--tube-on); box-shadow: 0 0 16px 3px var(--mint-soft); }
+  }
+  @keyframes glow { 50% { box-shadow: 0 0 40px var(--mint), inset 0 0 30px var(--mint-soft); } }
+
+  /* Descarga */
+  .cta { display: flex; flex-direction: column; gap: 14px; }
+  .cta h2 {
+    margin: 0; font-family: var(--display); font-weight: 700;
+    font-size: clamp(1.4rem, 5.6vw, 1.75rem); line-height: 1.15; letter-spacing: -0.02em; text-wrap: balance;
+  }
+  .cta p { margin: 0; color: var(--muted); max-width: 46ch; }
+  .stores { display: flex; flex-wrap: wrap; gap: 12px; }
+  .store {
+    flex: 1 1 200px; min-width: 0;
+    display: flex; align-items: center; gap: 12px;
+    min-height: 58px; padding: 10px 18px 10px 12px;
+    border: 0; border-radius: 16px;
+    background: var(--ink); color: var(--button-ink);
+    font: 700 16px/1.2 var(--body); text-align: left; cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .store:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35); }
+  .store:active { transform: translateY(0); }
+  .store .ic {
+    flex: none; display: grid; place-items: center;
+    width: 38px; height: 38px; border-radius: 11px; background: var(--mint); color: var(--button-ink);
+  }
+  .store .ic svg { width: 22px; height: 22px; }
+  .store small { display: block; font-size: 12px; font-weight: 500; color: #3E4A5A; }
+  .replay {
+    align-self: flex-start;
+    display: inline-flex; align-items: center; gap: 8px;
+    background: transparent; color: var(--ink);
+    border: 1px solid var(--line); border-radius: 999px;
+    padding: 10px 16px; font: 500 15px/1 var(--body); cursor: pointer;
+  }
+  .replay:hover { border-color: var(--mint); }
+  .replay svg { width: 18px; height: 18px; }
+  button:focus-visible { outline: 3px solid var(--mint); outline-offset: 3px; }
+
+  .foot { margin: 0; font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 16px; }
+
+  .toast {
+    position: fixed; left: 50%; transform: translateX(-50%);
+    bottom: calc(18px + env(safe-area-inset-bottom, 0px));
+    width: max-content; max-width: calc(100% - 32px);
+    background: var(--mint); color: var(--button-ink);
+    font-weight: 700; font-size: 15px; line-height: 1.35;
+    padding: 12px 18px; border-radius: 14px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .led { animation: none; }
+    .store, .curb { transition: none; }
+  }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <header class="top">
+    <div class="brand">
+      <span class="mark" aria-hidden="true">P</span>
+      <span class="word">Plaza<span>Ya</span></span>
+    </div>
+    <span class="spot">Plaza 14 · Planta −1</span>
+  </header>
+
+  <div class="scene">
+    <section class="facade" id="facade" data-state="scanning" aria-label="Entrada al garaje">
+      <div class="reader">
+        <span class="led" aria-hidden="true"></span>
+        <span class="reader-text" id="readerText" role="status" aria-live="polite">Leyendo tu código QR…</span>
+      </div>
+      <div class="opening">
+        <div class="interior">
+          <div class="tubes" aria-hidden="true"><i></i><i></i><i></i></div>
+          <div class="floor" aria-hidden="true"><div class="bay"><b>14</b></div></div>
+          <div class="message">
+            <p class="eyebrow">Acceso concedido</p>
+            <h1>Ya estás dentro.<br><span>Disfruta tu plaza.</span></h1>
+            <p class="ticket">Plaza 14 · Planta −1 · Válida hasta las 20:00</p>
+          </div>
+        </div>
+        <div class="door" id="door" aria-hidden="true">
+          <div class="slat"></div><div class="slat"></div><div class="slat"></div><div class="slat"></div>
+          <div class="slat"></div><div class="slat"></div><div class="slat"></div><div class="slat"></div>
+          <div class="handle"></div>
+        </div>
+      </div>
+    </section>
+    <div class="curb" aria-hidden="true"></div>
+  </div>
+
+  <section class="cta" aria-labelledby="ctaTitle">
+    <h2 id="ctaTitle">Así de fácil será aparcar con PlazaYa.</h2>
+    <p>Busca una plaza de garaje cerca de tu destino, resérvala por horas y entra con tu móvil. Sin mandos, sin llaves y sin dar vueltas.</p>
+    <div class="stores">
+      <button type="button" class="store" id="storeIphone">
+        <span class="ic" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M12 7v7m-3-3 3 3 3-3"/><path d="M10 18.5h4"/></svg>
+        </span>
+        <span><small>Muy pronto</small>Descargar para iPhone</span>
+      </button>
+      <button type="button" class="store" id="storeAndroid">
+        <span class="ic" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M12 7v7m-3-3 3 3 3-3"/><path d="M10 18.5h4"/></svg>
+        </span>
+        <span><small>Muy pronto</small>Descargar para Android</span>
+      </button>
+    </div>
+    <button type="button" class="replay" id="replay">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg>
+      Volver a abrir la puerta
+    </button>
+  </section>
+
+  <p class="foot">PlazaYa es un proyecto de clase: simulación de una ronda de financiación de startups. La app todavía no está publicada.</p>
+</main>
+
+<div class="toast" id="toast" role="status" aria-live="polite" hidden>La app aún no está disponible. ¡Muy pronto en tu móvil!</div>
+
+<script>
+(function () {
+  var facade = document.getElementById('facade');
+  var readerText = document.getElementById('readerText');
+  var toast = document.getElementById('toast');
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var timers = [];
+  var toastTimer = null;
+
+  function later(fn, ms) { timers.push(setTimeout(fn, ms)); }
+  function clearTimers() { timers.forEach(clearTimeout); timers = []; }
+  function setState(state, text) { facade.dataset.state = state; readerText.textContent = text; }
+
+  function openDoor() {
+    clearTimers();
+    facade.classList.remove('opening', 'lit', 'open', 'closing', 'static');
+    setState('scanning', 'Leyendo tu código QR…');
+
+    if (reduce) {
+      facade.classList.add('static', 'open');
+      setState('open', 'Acceso concedido · Puerta abierta');
+      return;
+    }
+
+    void facade.offsetWidth;
+    later(function () {
+      setState('granted', 'Acceso concedido · Plaza 14');
+      try { if (navigator.vibrate) navigator.vibrate([40, 60, 40]); } catch (e) {}
+    }, 1300);
+    later(function () {
+      facade.classList.add('opening');
+      readerText.textContent = 'Abriendo la puerta…';
+    }, 1900);
+    later(function () { facade.classList.add('lit'); }, 3500);
+    later(function () {
+      facade.classList.add('open');
+      setState('open', 'Puerta abierta · Bienvenido');
+    }, 4700);
+  }
+
+  function replay() {
+    clearTimers();
+    if (reduce || !facade.classList.contains('opening')) { openDoor(); return; }
+    facade.classList.remove('opening', 'lit', 'open');
+    facade.classList.add('closing');
+    setState('scanning', 'Cerrando la puerta…');
+    later(function () { facade.classList.remove('closing'); openDoor(); }, 950);
+  }
+
+  function showToast() {
+    toast.hidden = false;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { toast.hidden = true; }, 2600);
+  }
+
+  document.getElementById('replay').addEventListener('click', replay);
+  document.getElementById('storeIphone').addEventListener('click', showToast);
+  document.getElementById('storeAndroid').addEventListener('click', showToast);
+
+  openDoor();
+})();
+</script>
+</body>
+</html>
