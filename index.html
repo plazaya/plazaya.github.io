@@ -323,6 +323,14 @@
   .fund-top span:last-child { font-weight: 700; white-space: nowrap; font-variant-numeric: tabular-nums; }
   .bar { height: 8px; border-radius: 4px; background: var(--ink-tint); overflow: hidden; }
   .bar i { display: block; height: 100%; border-radius: 4px; background: var(--button-ink); }
+  .aim { display: flex; flex-direction: column; gap: 8px; }
+  .card.ronda .aim h4 { margin: 4px 0 2px; color: var(--button-ink); }
+  .aim-item { display: flex; align-items: center; justify-content: space-between; gap: 10px; background: var(--button-ink); border-radius: 12px; padding: 10px 12px; }
+  .aim-item span { display: flex; flex-direction: column; min-width: 0; font-size: 14px; line-height: 1.35; color: var(--muted); }
+  .aim-item span b { font-size: 15px; color: var(--ink); }
+  .aim-item em { font-style: normal; font-size: 12px; font-weight: 700; white-space: nowrap; color: var(--button-ink); background: var(--mint); border-radius: 999px; padding: 3px 9px; }
+  .aim-item.soft { background: var(--ink-tint); }
+  .aim-item.soft span, .aim-item.soft span b { color: var(--button-ink); }
   .sources { margin: 0; font-size: 13px; color: var(--muted); }
   @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
 
@@ -514,13 +522,13 @@
 
     <article class="card ronda">
       <h3><span class="n">11</span>La ronda</h3>
-      <p class="big">250.000 €</p>
-      <p><strong>a cambio del 10 % de PlazaYa</strong>, con una valoración de 2,5 M€ después de la ronda.</p>
-      <div class="funds" aria-label="Uso de los fondos">
-        <div class="fund"><div class="fund-top"><span>Tecnología: app y kit de acceso</span><span>87.500 € · 35 %</span></div><div class="bar"><i style="width: 35%"></i></div></div>
-        <div class="fund"><div class="fund-top"><span>Marketing y captación de plazas</span><span>87.500 € · 35 %</span></div><div class="bar"><i style="width: 35%"></i></div></div>
-        <div class="fund"><div class="fund-top"><span>Equipo</span><span>50.000 € · 20 %</span></div><div class="bar"><i style="width: 20%"></i></div></div>
-        <div class="fund"><div class="fund-top"><span>Legal, seguros y reserva</span><span>25.000 € · 10 %</span></div><div class="bar"><i style="width: 10%"></i></div></div>
+      <p class="big">Buscamos inversión</p>
+      <p><strong>Para poner PlazaYa en marcha y crecer con vosotros.</strong> Nuestro compromiso: gestionar cada euro con cabeza y llegar a ser rentables de forma rápida y eficaz, para que vuestra inversión esté protegida.</p>
+      <div class="aim" aria-label="A dónde irá la inversión">
+        <h4>A dónde irá la inversión</h4>
+        <div class="aim-item"><span><b>Tecnología</b>La app y el kit de acceso con QR</span><em>Foco principal</em></div>
+        <div class="aim-item"><span><b>Captación de plazas</b>Las primeras plazas y comunidades en Madrid</span><em>Foco principal</em></div>
+        <div class="aim-item soft"><span><b>Equipo y parte legal</b>Seguros, contratos y el equipo justo para crecer</span></div>
       </div>
     </article>
 
